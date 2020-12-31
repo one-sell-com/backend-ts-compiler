@@ -38,7 +38,7 @@ export interface {{@key}} {
 {{/each}}
 }
 
-{{#if common_internal @key}}
+{{#ifCommonOrInternal @key}}
 export interface {{client @key}} {
 {{#each methods}}
     {{uncapitalize @key}}(input: {{this.requestType}}): Observable<{{this.responseType}}>;
@@ -50,7 +50,7 @@ export interface {{stub @key}} {
     {{uncapitalize @key}}(input: {{this.requestType}}): Promise<{{this.responseType}}['data']>;
 {{/each}}
 }
-{{/if}}
+{{/ifCommonOrInternal}}
 
 {{> selector }}
 {{/inline}}
