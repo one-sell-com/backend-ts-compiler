@@ -51,7 +51,7 @@ export interface {{client @key}} {
 
 export interface {{stub @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<UnNull<Required<{{this.responseType}}['data']>>>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<{{this.responseType}}['data']>;
 {{/each}}
 }
 {{/ifCommonOrInternal}}
@@ -87,7 +87,7 @@ export namespace {{@key}} {
 {{/each}}
 export enum {{@key}} {
 {{#each values}}
-    {{@key}} = '{{this}}',
+    {{@key}} = '{{@key}}',
 {{/each}}
 }
 {{/inline}}
