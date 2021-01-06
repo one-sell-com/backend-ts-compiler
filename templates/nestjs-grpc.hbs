@@ -6,6 +6,10 @@
 
 import { Observable } from "rxjs";
 
+export interface TMP {
+  observable: Observable<unknown>
+}
+
 export type UnNull<T> = {
   [P in keyof T]: NonNullable<T[P]>;
 };
