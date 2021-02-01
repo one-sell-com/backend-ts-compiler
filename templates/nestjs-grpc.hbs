@@ -59,13 +59,13 @@ export interface {{@key}} {
 {{#ifInternal @key}}
 export interface {{client @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Observable<Always<{{this.responseType}}>>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Observable<{{this.responseType}}>;
 {{/each}}
 }
 
 export interface {{stub @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<{{this.responseType}}['data']>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<Always<{{this.responseType}}>['data']>;
 {{/each}}
 }
 {{/ifInternal}}
