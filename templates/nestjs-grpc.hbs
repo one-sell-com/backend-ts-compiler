@@ -9,6 +9,8 @@
 
 // @ts-ignore
 import { Observable } from 'rxjs';
+// @ts-ignore
+import { Metadata, ServerUnaryCall } from 'grpc';
 
 // @ts-ignore
 type UnNull<T> = { [P in keyof T]: NonNullable<T[P]> };
@@ -52,20 +54,20 @@ export namespace {{@key}} {
 
 export interface {{@key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<DataOrAll<{{this.responseType}}>>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta: Metadata, call: ServerUnaryCall<{{this.requestType}}>): Promise<DataOrAll<{{this.responseType}}>>;
 {{/each}}
 }
 
 {{#ifInternal @key}}
 export interface {{client @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Observable<{{this.responseType}}>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta?: Metadata): Observable<{{this.responseType}}>;
 {{/each}}
 }
 
 export interface {{stub @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>): Promise<Always<{{this.responseType}}>['data']>;
+    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta?: Metadata): Promise<Always<{{this.responseType}}>['data']>;
 {{/each}}
 }
 {{/ifInternal}}
