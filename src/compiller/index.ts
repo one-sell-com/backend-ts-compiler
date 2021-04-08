@@ -13,6 +13,7 @@ import './handlebars/default-value-helper';
 import './handlebars/stub-helper';
 import './handlebars/client-helper';
 import './handlebars/common-internal-helper';
+import './handlebars/nuller';
 
 import { IGenOptions } from '../types';
 

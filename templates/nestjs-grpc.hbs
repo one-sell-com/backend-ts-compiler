@@ -14,15 +14,19 @@ import { Metadata, ServerUnaryCall } from 'grpc';
 
 // @ts-ignore
 type UnNull<T> = { [P in keyof T]: NonNullable<T[P]> };
-// @ts-ignore
-type Always<T> = UnNull<Required<T>>;
-// @ts-ignore
-type RequireBy<T, K extends keyof T> = { [X in Exclude<keyof T, K>]: T[X] } & { [P in K]-?: Required<T[P]> };
-// @ts-ignore
-type DataOrAll<U extends { error?: any; data?: any }> = Omit<U, 'error' | 'data'> extends Record<any, never>
-  ? Required<U>['data']
-  : Omit<RequireBy<U, 'data'>, 'error'>;
 
+// @ts-ignore
+type DataOrAll<U> = U extends { data?: any }
+    ? (
+        Omit<U, 'data'> extends Record<any, never>
+        ? (
+            NonNullable<U['data']> extends Array<unknown>
+            ? NonNullable<U['data']>
+            : U
+        )
+        : U
+    )
+    : U;
 
 {{#ifHasInternal }}
 {{/ifHasInternal}}
@@ -54,20 +58,20 @@ export namespace {{@key}} {
 
 export interface {{@key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta: Metadata, call: ServerUnaryCall<{{this.requestType}}>): Promise<DataOrAll<{{this.responseType}}>>;
+    {{uncapitalize @key}}(input: UnNull<{{nuller this.requestType}}>, meta: Metadata, call: ServerUnaryCall<{{nuller this.requestType}}>): Promise<DataOrAll<{{nuller this.responseType}}>>;
 {{/each}}
 }
 
 {{#ifInternal @key}}
 export interface {{client @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta?: Metadata): Observable<{{this.responseType}}>;
+    {{uncapitalize @key}}(input: UnNull<{{nuller this.requestType}}>, meta?: Metadata): Observable<{{nuller this.responseType}}>;
 {{/each}}
 }
 
 export interface {{stub @key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{this.requestType}}>, meta?: Metadata): Promise<Always<{{this.responseType}}>['data']>;
+    {{uncapitalize @key}}(input: UnNull<{{nuller this.requestType}}>, meta?: Metadata): Promise<{{nuller this.responseType}}>;
 {{/each}}
 }
 {{/ifInternal}}
