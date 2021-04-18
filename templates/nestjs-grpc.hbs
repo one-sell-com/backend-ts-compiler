@@ -28,6 +28,21 @@ type DataOrAll<U> = U extends { data?: any }
     )
     : U;
 
+// @ts-ignore
+type DateToStr<T> = T extends Date
+    ? string
+    : (
+      T extends Array<infer E>
+      ? Array<DateToStr<E>>
+      : (
+        T extends object
+        ? {
+          [K in keyof T]: DateToStr<T[K]>;
+        }
+        : T
+      )
+    );
+
 {{#ifHasInternal }}
 {{/ifHasInternal}}
 
@@ -58,7 +73,7 @@ export namespace {{@key}} {
 
 export interface {{@key}} {
 {{#each methods}}
-    {{uncapitalize @key}}(input: UnNull<{{nuller this.requestType}}>, meta: Metadata, call: ServerUnaryCall<{{nuller this.requestType}}>): Promise<DataOrAll<{{nuller this.responseType}}>>;
+    {{uncapitalize @key}}(input: UnNull<{{nuller this.requestType}}>, meta: Metadata, call: ServerUnaryCall<{{nuller this.requestType}}>): Promise<DataOrAll<DateToStr<{{nuller this.responseType}}>>>;
 {{/each}}
 }
 
